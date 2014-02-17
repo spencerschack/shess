@@ -8,21 +8,24 @@ public:
 
 	void draw() {
 		if(printed) {
-			printf("\033[8A");
+			printf("\033[9A");
 		} else {
+			printf("\n");
 			printed = true;
 		}
 		for(int x = 0; x < 8; x++) {
+			printf("  ");
 			for(int y = 0; y < 8; y++) {
 				if((x + y) % 2 == 0) {
-					
+					printf("\e[48;5;238m");
 				} else {
-
+					printf("\e[48;5;244m");
 				}
 				printf("%s ", board[x][y]);
 			}
-			printf("\n");
+			printf("\e[0m\n");
 		}
+		printf("\n");
 	}
 
 	void move(int fromColumn, int fromRow, int toColumn, int toRow) {

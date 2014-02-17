@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string>
 #include <unistd.h>
+#include <termios.h>
 
 #include "board.cpp"
 
@@ -35,11 +36,25 @@ void printColor(char str[], const char color[]) {
 }
 
 int main(int argc, char* argv[]) {
+	// Disable input
+	termios tty;
+    tcgetattr(STDIN_FILENO, &tty);
+    tty.c_lflag &= ~ECHO;
+    tcsetattr(STDIN_FILENO, TCSANOW, &tty);
+
 	Board board = Board();
 	board.draw();
 	sleep(1);
 	board.move(1, 1, 2, 1);
 	board.draw();
 	sleep(1);
+	board.move(6, 6, 5, 6);
+	board.draw();
+	sleep(1);
+
+	// Enable input
+	tty.c_lflag |= ECHO;
+    tcsetattr(STDIN_FILENO, TCSANOW, &tty);
+
 	return 0;
 }
